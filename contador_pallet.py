@@ -22,7 +22,7 @@ def actualizar_lista():
     listbox_usuarios.delete(0, tk.END)
     for usuario in usuarios:
         # Se accede directamente al resultado que se guardó en el diccionario del usuario
-        listbox_usuarios.insert(tk.END, f"Nombre: {usuario['Nombre']} - Correo: {usuario['Correo']} - Unidades: {usuario['Resultado']} und")
+        listbox_usuarios.insert(tk.END, f"Nombre: {usuario['Nombre']} - Correo: {usuario['Correo']} - Unidades: {usuario['Resultado']} und - peso: {usuario['resultado2']}")
         # El antiguo código era:
         # listbox_usuarios.insert(tk.END, f"Nombre: {usuario['Nombre']} - Correo: {usuario['Correo']} - Unidades:", resultado)
 
@@ -58,7 +58,12 @@ def abrir_ventana_registro():
     label_Filas_profundidad.pack(pady=5)
     entry_Filas_profundidad = tk.Entry(ventana_registro)
     entry_Filas_profundidad.pack(pady=5)
-
+    
+    label_peso = tk.Label(ventana_registro, text="peso x und")
+    label_peso.pack(pady=5)
+    entry_peso = tk.Entry(ventana_registro)
+    entry_peso.pack(pady=5)
+    
 
     # Función para agregar el nuevo usuario desde la ventana secundaria
     def agregar_usuario():
@@ -74,6 +79,7 @@ def abrir_ventana_registro():
             Filas_profundidad = int(entry_Filas_profundidad.get())
             # Cálculo de resultado
             resultado = filas * Columnas * Filas_profundidad
+            resultado2 = resultado * peso
         except ValueError:
             messagebox.showwarning("Advertencia", "Por favor, ingrese valores numéricos válidos en Filas, Columnas y Filas a fondo.")
             return # Detiene la función si hay un error en los números
@@ -87,7 +93,8 @@ def abrir_ventana_registro():
                 "Filas": filas, 
                 "Columnas": Columnas, 
                 "Filas a fondo": Filas_profundidad,
-                "Resultado": resultado # <--- Se guarda el resultado aquí
+                "Resultado": resultado,
+                "resultado2" : resultado2 # <--- Se guarda el resultado aquí
             })
             
             actualizar_lista()
@@ -96,7 +103,7 @@ def abrir_ventana_registro():
             
             # Se corrige la forma de mostrar el resultado en el messagebox. 
             # Se usa el resultado calculado (resultado) y se une con el texto.
-            messagebox.showinfo("Resultado del Cálculo", f"El número de elementos en tu pallet es de: {resultado} und")
+            messagebox.showinfo("Resultado del Cálculo", f"El número de elementos en tu pallet es de: {resultado} und y su peso es de {resultado2}")
             
         else:
             messagebox.showwarning("Advertencia", "Por favor, complete todos los campos")
@@ -109,7 +116,7 @@ def abrir_ventana_registro():
 label_lista = tk.Label(raiz, text="Lista de Pallets Registrados:")
 label_lista.pack(pady=10)
 
-# Listbox para mostrar los usuarios registrados
+# Listbox para mostrar los usuarios registrados 
 listbox_usuarios = tk.Listbox(raiz, width=60, height=20)
 listbox_usuarios.pack(pady=5)
 
